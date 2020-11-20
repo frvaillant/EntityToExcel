@@ -76,7 +76,7 @@ This argument needs the name of the field you want to use to list your linked en
 ```
 
 - **Default value**  
-You can add default value. This value will fill the cell on the third line as an example.  
+You can add a default value. This value will fill the cell on the third line as an example.  
 ```php
     /**
      * @EtEx(defaultValue="My value")
@@ -102,7 +102,7 @@ If your entity is linked with some others. For example your entity "Person" repr
 You probably need some more informations about musicians wich are represented by the "Musician" entity.  
 With the `includeFields` parameter, you will generate another sheet in your excel file with the properties of the Musician entity.  
 ```php
-/**
+    /**
      * @EtEx(includeFields=true, displayName="Precision if this person is musician")
      * @ORM\OneToOne(targetEntity=Musician::class, cascade={"persist", "remove"})
      */
