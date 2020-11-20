@@ -11,7 +11,7 @@ This software is free to use, modify and share. It's made with a lot of love but
 
 # Install
  first run
- `composer require frvaillant/entitytoexcel`
+ `composer require frvaillant/entitytoexcel`  
  
  Edit your `config/services.yaml` file and add under services key :
  ```yaml
@@ -26,6 +26,11 @@ launch command in your terminal :
 `php bin/console entity:excel Entity`  
 Replace Entity by the name of the entity you want to export as excel file
 
+If you get an error like  
+ `Attempted to load class "Spreadsheet" from namespace "PhpOffice\PhpSpreadsheet".  
+    Did you forget a "use" statement for another namespace? `  
+then run `composer require phpoffice/phpspreadsheet`  
+ 
 The file is exported as `Entity.xlsx` in the public/xls directory
 
 # Excel file description
