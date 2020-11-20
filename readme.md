@@ -31,7 +31,7 @@ The file is exported as `Entity.xlsx` in the public/xls directory
 # Excel file description
 Each property of your entity is reported on each column of the table.  
 On the first line, the name of the property  
-On the second line, the display name (if you choose some (see above))  
+On the second line, the display name (if you choose some (see below))  
 On the third line, the default values
 
 # Get more
@@ -49,7 +49,7 @@ If you want to exclude one of your entity properties from your excel file :
 ```
 
 - **Add a dropdown value selector**  
-if you want to add choices to fill cells, you cann add a list parameter as above  
+if you want to add choices to fill cells, you can add a list parameter as below  
 ```php
     /**
      * @EtEx(list={"1", "0"}, defaultValue="0")
