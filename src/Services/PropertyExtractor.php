@@ -3,6 +3,8 @@
 
 namespace EntityToExcel\Services;
 
+use EntityToExcel\Services\DataTransformer;
+
 
 class PropertyExtractor
 {

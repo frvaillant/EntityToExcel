@@ -8,6 +8,22 @@ use Doctrine\Common\Annotations\AnnotationReader;
 
 class DataTransformer
 {
+
+    private static function makeArray($property, $type, $classname, $reader)
+    {
+        return [
+            'name'           => $property->getName(),
+            'type'           => $type,
+            'class'          => null,
+            'list'           => $reader->getList(),
+            'includeFields'  => $reader->includeFields() ?? null,
+            'listFromEntity' => ($reader->getFieldNameFromEntity()) ? $reader->getDropDownEntity() : null,
+            'fieldName'      => $reader->getFieldNameFromEntity() ?? null,
+            'defaultValue'   => $reader->getDefaultValue(),
+            'displayName'    => $reader->getDisplayName()
+        ];
+    }
+
     /**
      * This method creates an array of useful properties to make excel file from a list of entity properties
      * @param $properties
@@ -15,90 +31,27 @@ class DataTransformer
      */
     public static function makePropertiesArray($properties)
     {
-        foreach ($properties as $property) {
-
-            $reader = new PropertyReader($property);
-
-            if ($reader->isExcluded() === false) {
-
-                $annotation = $reader->getAnnotation();
-                if ($reader->isColumn()) {
-                    $arrayOfProperties[] = [
-                        'name'           => $property->getName(),
-                        'type'           => $annotation->type,
-                        'list'           => $reader->getList(),
-                        'listFromEntity' => ($reader->getFieldNameFromEntity()) ? $reader->getDropDownEntity() : null,
-                        'fieldName'      => ($reader->getFieldNameFromEntity()) ? $reader->getFieldNameFromEntity() : null,
-                        'defaultValue'   => $reader->getDefaultValue() ?? null,
-                        'reverseColumn'  => $reader->getReverseColumn() ?? null,
-                    ];
-                }
-
-                if ($reader->isRelation()) {
-                    $arrayOfProperties[] = [
-                        'name'           => $property->getName(),
-                        'type'           => 'relation',
-                        'class'          => $annotation->targetEntity,
-                        'list'           => $reader->getList(),
-                        'includeFields'  => $reader->includeFields(),
-                        'listFromEntity' => ($reader->getFieldNameFromEntity()) ? $reader->getDropDownEntity() : null,
-                        'fieldName'      => ($reader->getFieldNameFromEntity()) ? $reader->getFieldNameFromEntity() : null,
-                        'defaultValue'   => $reader->getDefaultValue() ?? null,
-                        'reverseColumn'  => $reader->getReverseColumn() ?? null,
-                    ];
-
-                    if ($reader->includeFields()) {
-                        $subProperties = DataTransformer::makePropertiesArrayFromClass($annotation->targetEntity);
-                        $arrayOfProperties[$annotation->targetEntity] = $subProperties;
-                    }
-                }
-
-            }
-        }
-        return $arrayOfProperties;
-    }
-
-    /**
-     * This method makes an array of useful properties from a class Name to create excel file
-     * @param $class
-     * @return array
-     */
-    public static function makePropertiesArrayFromClass($class)
-    {
-        $properties = PropertyExtractor::extractProperties($class);
         $arrayOfProperties = [];
 
         foreach ($properties as $property) {
 
             $reader = new PropertyReader($property);
+            $annotation = $reader->getAnnotation();
 
             if ($reader->isExcluded() === false) {
 
-                $annotation = $reader->getAnnotation();
                 if ($reader->isColumn()) {
-                    $arrayOfProperties[] = [
-                        'name'           => $property->getName(),
-                        'type'           => $annotation->type,
-                        'list'           => $reader->getList(),
-                        'listFromEntity' => ($reader->getFieldNameFromEntity()) ? $reader->getDropDownEntity() : null,
-                        'fieldName'      => ($reader->getFieldNameFromEntity()) ? $reader->getFieldNameFromEntity() : null,
-                        'defaultValue'   => $reader->getDefaultValue() ?? null,
-                        'reverseColumn'  => $reader->getReverseColumn() ?? null,
-                    ];
+                    $arrayOfProperties[] = DataTransformer::makeArray($property, $annotation->type, null, $reader);
                 }
 
                 if ($reader->isRelation()) {
-                    $arrayOfProperties[] = [
-                        'name'           => $property->getName(),
-                        'type'           => 'relation',
-                        'class'          => $annotation->targetEntity,
-                        'list'           => $reader->getList(),
-                        'includeFields'  => $reader->includeFields(),
-                        'listFromEntity' => ($reader->getFieldNameFromEntity()) ? $reader->getDropDownEntity() : null,
-                        'fieldName'      => ($reader->getFieldNameFromEntity()) ? $reader->getFieldNameFromEntity() : null,
-                        'defaultValue'   => $reader->getDefaultValue() ?? null,
-                        'reverseColumn'  => $reader->getReverseColumn() ?? null,
-                    ];
+                    $arrayOfProperties[] = DataTransformer::makeArray($property, 'relation', $annotation->targetEntity, $reader);
+
+                    if ($reader->includeFields()) {
+                        $subclassProperties = PropertyExtractor::extractProperties($annotation->targetEntity);
+                        $subProperties = DataTransformer::makePropertiesArray($subclassProperties);
+                        $arrayOfProperties[$annotation->targetEntity] = $subProperties;
+                    }
                 }
 
             }

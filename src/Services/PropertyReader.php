@@ -17,7 +17,7 @@ class PropertyReader
     const ONE_TO_MANY  = 'Doctrine\ORM\Mapping\OneToMany';
     const ONE_TO_ONE   = 'Doctrine\ORM\Mapping\OneToOne';
     const COLUMN       = 'Doctrine\ORM\Mapping\Column';
-    const EtEx         = 'App\Command\EntityToExcel\Annotations\EtEx';
+    const EtEx         = 'EntityToExcel\Annotations\EtEx';
 
     /**
      * @var AnnotationReader
@@ -69,25 +69,26 @@ class PropertyReader
 
     public function getDefaultValue()
     {
-        if ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) {
-            return $this->reader->getPropertyAnnotation($this->property, self::EtEx)->defaultValue;
-        }
-        return null;
+        return ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) ?
+            $this->reader->getPropertyAnnotation($this->property, self::EtEx)->defaultValue :
+            null;
     }
 
-    public function getReverseColumn()
+    public function getDisplayName()
     {
-        if ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) {
-            return $this->reader->getPropertyAnnotation($this->property, self::EtEx)->reverseColumn;
-        }
-        return null;
+        return ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) ?
+            $this->reader->getPropertyAnnotation($this->property, self::EtEx)->displayName :
+            null;
     }
+
 
 
     public function getDropDownEntity()
     {
         return $this->getAnnotation()->targetEntity;
     }
+
+
 
 
     public function isColumn(): bool

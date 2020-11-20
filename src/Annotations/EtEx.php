@@ -5,13 +5,10 @@ namespace EntityToExcel\Annotations;
 
 /**
  * @Annotation
+ *
  */
 class EtEx
 {
-    /**
-     * @var string
-     */
-    public $reverseColumn;
 
     /**
      * @var bool
@@ -36,5 +33,12 @@ class EtEx
     /**
      * @var string
      */
-    public $defaultValue = '';
+    public $defaultValue = "";
+
+    /**
+     * @var string
+     */
+    public $displayName = "";
+
+
 }

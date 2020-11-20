@@ -8,6 +8,7 @@ use EntityToExcel\Services\DataTransformer;
 use Doctrine\ORM\EntityManager;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -63,39 +64,36 @@ class ExcelFileBuilder
             // If is just a simple property
             if (isset($property['name'])) {
                 $sheet->setCellValue($letter . self::FIRST_LINE, $property['name']);
-                $sheet->getColumnDimension($letter)->setAutoSize(true);
-
                 $this->formatCell($sheet, $letter . self::FIRST_LINE, $property['type']);
 
-                // Set default value if there is one
-                if ($property['defaultValue']) {
-                    $sheet->setCellValue($letter . self::SECOND_LINE, $property['defaultValue']);
-                    $sheet->getColumnDimension($letter)->setAutoSize(true);
-                }
+                $sheet->setCellValue($letter . self::SECOND_LINE, $property['displayName']);
+
+                $sheet->getColumnDimension($letter)->setAutoSize(true);
 
                 // Make a dropdown choice list if necessary
                 if(null !== $property['listFromEntity']) {
                     $repository = $this->em->getRepository($property['listFromEntity']);
                     $data = DataTransformer::makeListFromEntity($repository->findAll(), $property['fieldName']);
-                    $this->createChoiceList($sheet, $letter . self::SECOND_LINE, $data);
+                    $this->createChoiceList($sheet, $letter . self::THIRD_LINE, $data);
                 }
 
                 // Make a dropdown choice list if necessary
                 if(null !== $property['list']) {
-                    $this->createChoiceList($sheet, $letter . self::SECOND_LINE, $property['list']);
+                    $this->createChoiceList($sheet, $letter . self::THIRD_LINE, $property['list']);
+                    $sheet->setCellValue($letter . self::THIRD_LINE, $property['defaultValue']);
                 }
 
-                // Add a column for reversed field
-                if ($property['reverseColumn']) {
-                    $letter++;
-                    $sheet->setCellValue($letter . self::FIRST_LINE, $property['reverseColumn']);
+                // Set default value if there is one
+                if ($property['defaultValue']) {
+                    $sheet->setCellValue($letter . self::THIRD_LINE, $property['defaultValue']);
+                    $sheet->getColumnDimension($letter)->setAutoSize(true);
                 }
 
                 $letter++;
 
             } else { // Create new sheet to store secondary entity
-
-                $subSheet = $this->createSheet(str_replace("\\", " ", $key));
+                list($namespace, $entityName) = explode('App\Entity\\', $key);
+                $subSheet = $this->createSheet($entityName);
                 $this->setColumns($subSheet, $property);
 
             }
@@ -123,10 +121,10 @@ class ExcelFileBuilder
                 'fillType' => Fill::FILL_GRADIENT_LINEAR,
                 'rotation' => 0,
                 'startColor' => [
-                    'argb' => 'FFfea621',
+                    'argb' => 'FF00b7d0',
                 ],
                 'endColor' => [
-                    'argb' => 'FFfea621',
+                    'argb' => 'FF00b7d0',
                 ],
             ],
         ];
@@ -141,6 +139,7 @@ class ExcelFileBuilder
 
         $sheet->getStyle('A' . self::FIRST_LINE . ':' . $sheet->getHighestColumn() . self::FIRST_LINE)->applyFromArray($styleArray);
         $sheet->getStyle('A' . self::SECOND_LINE . ':' . $sheet->getHighestColumn() . self::SECOND_LINE)->applyFromArray($borders);
+        $sheet->getStyle('A' . self::THIRD_LINE . ':' . $sheet->getHighestColumn() . self::THIRD_LINE)->applyFromArray($borders);
     }
 
 
