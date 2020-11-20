@@ -76,7 +76,7 @@ This argument needs the name of the field you want to use to list your linked en
 ```
 
 - **Default value**  
-You can a default value. This value will fill the cell on the third line as an example.  
+You can add default value. This value will fill the cell on the third line as an example.  
 ```php
     /**
      * @EtEx(defaultValue="My value")
