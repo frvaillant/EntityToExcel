@@ -1,12 +1,11 @@
 <?php
 
 
-namespace App\Command\EntityToExcel;
+namespace EntityToExcel\Command;
 
 
 use EntityToExcel\Excel\ExcelFileBuilder;
 use EntityToExcel\Services\DataTransformer;
-use EntityToExcel\Services\PropertyReader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
