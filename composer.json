@@ -5,7 +5,7 @@
     "require": {
         "phpoffice/phpspreadsheet": "^1.15"
     },
-    "version": "0.9",
+    "version": "0.9.2",
     "license": "MIT",
     "authors": [
         {
