@@ -2,11 +2,12 @@
     "name": "frvaillant/entitytoexcel",
     "description": "Adds symfony command to export entities as excel file",
     "keywords": ["PHP","entity", "excel", "export", "symfony"],
+    "minimum-stability": "stable",
     "require": {
         "php": "^7.2",
         "phpoffice/phpspreadsheet": "^1.15"
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "authors": [
         {
