@@ -25,11 +25,6 @@ services:
 launch command in your terminal :  
 `php bin/console entity:excel Entity`  
 Replace Entity by the name of the entity you want to export as excel file
-
-If you get an error like  
- `Attempted to load class "Spreadsheet" from namespace "PhpOffice\PhpSpreadsheet".  
-    Did you forget a "use" statement for another namespace? `  
-then run `composer require phpoffice/phpspreadsheet`  
  
 The file is exported as `Entity.xlsx` in the public/xls directory
 
