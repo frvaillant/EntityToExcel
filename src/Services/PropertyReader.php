@@ -37,34 +37,30 @@ class PropertyReader
 
     public function isExcluded()
     {
-        if ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) {
-            return $this->reader->getPropertyAnnotation($this->property, self::EtEx)->exclude;
-        }
-        return false;
+        return ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) ?
+            $this->reader->getPropertyAnnotation($this->property, self::EtEx)->exclude :
+            false;
     }
 
     public function includeFields()
     {
-        if ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) {
-            return $this->reader->getPropertyAnnotation($this->property, self::EtEx)->includeFields;
-        }
-        return false;
+        return ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) ?
+            $this->reader->getPropertyAnnotation($this->property, self::EtEx)->includeFields :
+            false;
     }
 
     public function getList()
     {
-        if ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) {
-            return $this->reader->getPropertyAnnotation($this->property, self::EtEx)->list;
-        }
-        return null;
+        return ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) ?
+            $this->reader->getPropertyAnnotation($this->property, self::EtEx)->list :
+            null;
     }
 
     public function getFieldNameFromEntity()
     {
-        if ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) {
-            return $this->reader->getPropertyAnnotation($this->property, self::EtEx)->listFromEntityWith;
-        }
-        return null;
+        return ($this->reader->getPropertyAnnotation($this->property, self::EtEx)) ?
+            $this->reader->getPropertyAnnotation($this->property, self::EtEx)->listFromEntityWith :
+            null;
     }
 
     public function getDefaultValue()
@@ -81,15 +77,10 @@ class PropertyReader
             null;
     }
 
-
-
     public function getDropDownEntity()
     {
         return $this->getAnnotation()->targetEntity;
     }
-
-
-
 
     public function isColumn(): bool
     {
@@ -131,9 +122,8 @@ class PropertyReader
 
     public function getEtEx()
     {
-        if (null !== $this->reader->getPropertyAnnotation($this->property, self::EtEx)) {
-            return $this->reader->getPropertyAnnotation($this->property, self::EtEx);
-        }
-        return null;
+        return (null !== $this->reader->getPropertyAnnotation($this->property, self::EtEx)) ?
+            $this->reader->getPropertyAnnotation($this->property, self::EtEx) :
+            null;
     }
 }
