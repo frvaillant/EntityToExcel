@@ -108,10 +108,18 @@ With the `includeFields` parameter, you will generate another sheet in your exce
      */
     private $musicianPrecision;
 ```  
+
+You can use one of the above parameters, and of course you can use as much filters as you like
+```php
+    /**
+     * @EtEx(list={"0", "1", "2"}, displayName="your word", defaultValue="1")
+     */
+```  
+
 # Future development
 The reverse side of this program is on the way in order to import data following excel files.  
 To be continued ...  
   
-  Feel free to report any encoutered problemes using issues on github  
+  Feel free to report any encountered problem using issues on github  
   Github repository : https://github.com/frvaillant/EntityToExcel/
 
