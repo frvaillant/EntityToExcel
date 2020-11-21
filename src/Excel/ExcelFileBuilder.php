@@ -63,12 +63,12 @@ class ExcelFileBuilder
 
             // If is just a simple property
             if (isset($property['name'])) {
+
                 $sheet->setCellValue($letter . self::FIRST_LINE, $property['name']);
+
                 $this->formatCell($sheet, $letter . self::FIRST_LINE, $property['type']);
 
                 $sheet->setCellValue($letter . self::SECOND_LINE, $property['displayName']);
-
-                $sheet->getColumnDimension($letter)->setAutoSize(true);
 
                 // Make a dropdown choice list if necessary
                 if(null !== $property['listFromEntity']) {
@@ -86,19 +86,24 @@ class ExcelFileBuilder
                 // Set default value if there is one
                 if ($property['defaultValue']) {
                     $sheet->setCellValue($letter . self::THIRD_LINE, $property['defaultValue']);
-                    $sheet->getColumnDimension($letter)->setAutoSize(true);
                 }
+
+                $sheet->getColumnDimension($letter)->setAutoSize(true);
 
                 $letter++;
 
             } else { // Create new sheet to store secondary entity
-                list($namespace, $entityName) = explode('App\Entity\\', $key);
-                $subSheet = $this->createSheet($entityName);
-                $this->setColumns($subSheet, $property);
-
+                $this->createSubSheet($key, $property);
             }
         }
         $this->setMainLineStyle($sheet);
+    }
+
+    private function createSubSheet($name, $property)
+    {
+        list($namespace, $entityName) = explode('App\Entity\\', $name);
+        $subSheet = $this->createSheet($entityName);
+        $this->setColumns($subSheet, $property);
     }
 
     private function setMainLineStyle($sheet)
@@ -141,7 +146,6 @@ class ExcelFileBuilder
         $sheet->getStyle('A' . self::SECOND_LINE . ':' . $sheet->getHighestColumn() . self::SECOND_LINE)->applyFromArray($borders);
         $sheet->getStyle('A' . self::THIRD_LINE . ':' . $sheet->getHighestColumn() . self::THIRD_LINE)->applyFromArray($borders);
     }
-
 
     private function formatCell(Worksheet $sheet, string $cell, string $type)
     {
