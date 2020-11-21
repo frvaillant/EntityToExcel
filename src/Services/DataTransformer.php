@@ -14,7 +14,7 @@ class DataTransformer
         return [
             'name'           => $property->getName(),
             'type'           => $type,
-            'class'          => null,
+            'class'          => $classname,
             'list'           => $reader->getList(),
             'includeFields'  => $reader->includeFields() ?? null,
             'listFromEntity' => ($reader->getFieldNameFromEntity()) ? $reader->getDropDownEntity() : null,
