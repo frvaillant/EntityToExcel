@@ -3,6 +3,7 @@
     "description": "Adds symfony command to export entities as excel file",
     "keywords": ["entity", "excel", "export", "symfony"],
     "require": {
+        "php": "^7.2|^8.0",
         "phpoffice/phpspreadsheet": "^1.15"
     },
     "version": "1.0.0",
@@ -13,9 +14,6 @@
             "email": "frvaillant@gmail.com"
         }
     ],
-    "require": {
-        "php": ">=7.0.0"
-    },
     "autoload": {
         "psr-4": {
             "EntityToExcel\\": "src/"
