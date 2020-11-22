@@ -7,7 +7,7 @@
         "php": "^7.2",
         "phpoffice/phpspreadsheet": "^1.15"
     },
-    "version": "1.0.1",
+    "version": "1.0.2",
     "license": "MIT",
     "authors": [
         {

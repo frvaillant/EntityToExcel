@@ -53,6 +53,9 @@ class EntityToCsvCommand extends Command
         $excelMaker->setProperties(DataTransformer::makePropertiesArray($properties));
 
         $fileUrl = $excelMaker->saveFile($class->getName());
+
         $io->writeln($fileUrl);
+
+        return 1;
     }
 }
